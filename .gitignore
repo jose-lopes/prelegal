@@ -40,3 +40,12 @@ go.work.sum
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Next.js frontend and checks
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+test-results/
+playwright-report/
+/frontend/next-env.d.ts
