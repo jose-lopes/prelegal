@@ -93,3 +93,14 @@ textarea { resize: vertical; min-height: 70px; }
 @media (max-width: 1000px) { .workspace { gap: 20px; grid-template-columns: minmax(300px, .95fr) minmax(0, 1fr); } .template-badge { display: none; } .document { padding: 25px 22px; } .document h2 { font-size: 24px; } .preview-scroll { padding: 14px; } .preview-toolbar { flex-wrap: wrap; } .download-bar { align-items: start; flex-direction: column; } .download-bar button { width: 100%; } .download-status { text-align: left; } }
 @media (max-width: 720px) { .site-header { min-height: 75px; padding: 15px 6%; flex-wrap: wrap; gap: 12px; } .brand { font-size: 21px; } .privacy-note { font-size: 9px; } main { padding: 0 6%; } .intro { padding: 36px 0 28px; } h1 { font-size: 39px; letter-spacing: -1.5px; } .eyebrow { font-size: 8px; letter-spacing: 1.2px; } .intro-copy { font-size: 12px; } .mobile-break { display: block; } .desktop-break { display: none; } .workspace { grid-template-columns: minmax(0, 1fr); gap: 32px; } .preview-panel { position: static; } .preview-scroll { max-height: 650px; min-height: 400px; } .panel-heading, .form-section, .form-bottom { padding: 22px; } .document { padding: 30px 22px; } .preview-toolbar { flex-wrap: nowrap; } .preview-toolbar h2 { font-size: 12px; } .status-pill { font-size: 8px; } .download-bar { flex-direction: row; align-items: center; } .download-bar button { width: auto; padding: 13px; } .download-bar > div > span { max-width: 160px; line-height: 1.6; } .site-footer { align-items: start; flex-direction: column; gap: 12px; padding: 24px 0; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+.login-page { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.login-card { width: 100%; max-width: 460px; padding: clamp(24px, 5vw, 42px); background: var(--paper); border: 1px solid var(--line); border-top: 4px solid #ecad0a; border-radius: 7px; }
+.login-card .brand { color: #032147; margin-bottom: 40px; }
+.login-card .brand-symbol { background: #209dd7; }
+.login-card .eyebrow { color: #032147; font-size: 9px; }
+.login-card h1 { color: #032147; font-size: 36px; letter-spacing: -1px; }
+.login-card > p:not(.eyebrow) { color: #888888; line-height: 1.8; }
+.login-button { width: 100%; margin-top: 16px; padding: 14px 20px; background: #753991; color: white; border: 0; border-radius: 4px; font-weight: 600; }
+.login-button:hover { background: #612f78; }
+.login-note { margin-bottom: 0; font-size: 11px; }

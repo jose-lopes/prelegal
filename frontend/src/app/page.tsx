@@ -1,8 +1,8 @@
-import { NdaBuilder } from "@/components/nda-builder";
+import { DemoLogin } from "@/components/demo-login";
 import { loadTemplate } from "@/lib/template";
 
 export const dynamic = "force-static";
 
 export default function Home() {
-  return <NdaBuilder template={loadTemplate()} />;
+  return <DemoLogin template={loadTemplate()} />;
 }

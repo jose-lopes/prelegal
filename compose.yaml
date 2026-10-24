@@ -1,7 +1,19 @@
 name: prelegal
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    init: true
+    ports:
+      - "127.0.0.1:${APP_PORT:-8000}:8000"
+    tmpfs:
+      - /tmp
+
   frontend:
+    profiles: ["dev"]
     build:
       context: .
       dockerfile: frontend/Dockerfile
@@ -29,6 +41,13 @@ services:
       NEXT_TELEMETRY_DISABLED: "1"
     command: ["sh", "-c", "npm run lint && npm run test && npm run build && npm run typecheck"]
 
+  backend-checks:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-checks
+
   e2e:
     profiles: ["test"]
     build:
@@ -39,7 +58,11 @@ services:
     shm_size: 1gb
     environment:
       NEXT_TELEMETRY_DISABLED: "1"
-    command: ["sh", "-c", "npm run build && npm run test:e2e"]
+      PLAYWRIGHT_BASE_URL: http://app:8000
+    depends_on:
+      app:
+        condition: service_healthy
+    command: ["npm", "run", "test:e2e"]
 
   tooling:
     profiles: ["tools"]
