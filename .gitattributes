@@ -1,0 +1,2 @@
+# Preserve upstream Markdown bytes so catalog checksums survive checkout.
+templates/*/*.md -text

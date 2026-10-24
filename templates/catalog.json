@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "curated_on": "2026-10-24",
+  "templates": [
+    {
+      "id": "ai-addendum",
+      "name": "AI Addendum",
+      "description": "Supplemental terms for AI services, including input, output, and model training.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/AI-Addendum",
+        "commit": "6d9b044df73a2477c177e5989fca7f8d27df9387",
+        "license_notice": {
+          "path": "AI-Addendum/README.md",
+          "url": "https://github.com/CommonPaper/AI-Addendum/blob/6d9b044df73a2477c177e5989fca7f8d27df9387/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "AI-Addendum/AI-Addendum.md",
+          "source_url": "https://github.com/CommonPaper/AI-Addendum/blob/6d9b044df73a2477c177e5989fca7f8d27df9387/AI-Addendum.md",
+          "git_blob_sha1": "23b67c123f1f9848d3d08fd2654885c31fe855b2",
+          "sha256": "49d44a8ef0d5b0cadfc75abda509683d30e6a45af4ab29c6304a1e1a4d544be7"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "business-associate-agreement",
+      "name": "Business Associate Agreement",
+      "description": "Terms governing a business associate's handling of protected health information under HIPAA.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/BAA",
+        "commit": "5f1fd992df1d0c78bf69997e1881e4107fa75695",
+        "license_notice": {
+          "path": "BAA/README.md",
+          "url": "https://github.com/CommonPaper/BAA/blob/5f1fd992df1d0c78bf69997e1881e4107fa75695/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "BAA/BAA.md",
+          "source_url": "https://github.com/CommonPaper/BAA/blob/5f1fd992df1d0c78bf69997e1881e4107fa75695/BAA.md",
+          "git_blob_sha1": "e7594f182c92ed5f9bf85f652ab431af02b66653",
+          "sha256": "2f8f61068ea5284a7cc8857c3fa049ec10a12bed83aa93ed27991f917f338a8c"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "cloud-service-agreement",
+      "name": "Cloud Service Agreement",
+      "description": "Standard terms for providing and subscribing to cloud software and services.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/CSA",
+        "commit": "3efceb01e3c8bfb7b302a5f34975aa2b084026a3",
+        "license_notice": {
+          "path": "CSA/README.md",
+          "url": "https://github.com/CommonPaper/CSA/blob/3efceb01e3c8bfb7b302a5f34975aa2b084026a3/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "CSA/CSA.md",
+          "source_url": "https://github.com/CommonPaper/CSA/blob/3efceb01e3c8bfb7b302a5f34975aa2b084026a3/CSA.md",
+          "git_blob_sha1": "d435c5f54ff0ddb4d88ffeff58be79b3e56b6ba1",
+          "sha256": "cd8015f5f0a2030b424acd5f3efbaef12ffc0a6e269d57db6b8aad42bb1d5e28"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "data-processing-agreement",
+      "name": "Data Processing Agreement",
+      "description": "Terms governing processing of personal data on behalf of a controller.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/DPA",
+        "commit": "9f1c40d3fb0bb900397a919d058a9c0870f6b0f0",
+        "license_notice": {
+          "path": "DPA/README.md",
+          "url": "https://github.com/CommonPaper/DPA/blob/9f1c40d3fb0bb900397a919d058a9c0870f6b0f0/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "DPA/DPA.md",
+          "source_url": "https://github.com/CommonPaper/DPA/blob/9f1c40d3fb0bb900397a919d058a9c0870f6b0f0/DPA.md",
+          "git_blob_sha1": "2f9004b5d073edbdd7fba796754fac8a1866e029",
+          "sha256": "b4aa93c94bcb4da763fc2338406d3aec2ac1f0a6e32612f114121d609dece05a"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "design-partner-agreement",
+      "name": "Design Partner Agreement",
+      "description": "Terms for early product access and feedback from a design partner.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/Design-Partner-Agreement",
+        "commit": "ab676a7a4b68ae84f1cfdba9f49a514d3aaa6694",
+        "license_notice": {
+          "path": "Design-Partner-Agreement/README.md",
+          "url": "https://github.com/CommonPaper/Design-Partner-Agreement/blob/ab676a7a4b68ae84f1cfdba9f49a514d3aaa6694/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "Design-Partner-Agreement/design-partner-agreement.md",
+          "source_url": "https://github.com/CommonPaper/Design-Partner-Agreement/blob/ab676a7a4b68ae84f1cfdba9f49a514d3aaa6694/design-partner-agreement.md",
+          "git_blob_sha1": "0ceb125da54876210f6d25c3f3e1922c774b4eca",
+          "sha256": "778f8432394241e37157cb3951a5b048edbf40aac8a6a3948a1c78bc44fc6bab"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "mutual-nda",
+      "name": "Mutual Non-Disclosure Agreement",
+      "description": "Terms for parties exchanging confidential information while evaluating a business relationship.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/Mutual-NDA",
+        "commit": "2a3068b6c0ab6015c440f541d5b215bc3ac2f4cb",
+        "license_notice": {
+          "path": "Mutual-NDA/README.md",
+          "url": "https://github.com/CommonPaper/Mutual-NDA/blob/2a3068b6c0ab6015c440f541d5b215bc3ac2f4cb/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "cover_page",
+          "path": "Mutual-NDA/Mutual-NDA-coverpage.md",
+          "source_url": "https://github.com/CommonPaper/Mutual-NDA/blob/2a3068b6c0ab6015c440f541d5b215bc3ac2f4cb/Mutual-NDA-coverpage.md",
+          "git_blob_sha1": "c4a3204d09a5c7a142285fc9028cc345ce87a951",
+          "sha256": "ea6fdd5aede5b918f3d5a4597d4d70440cf6e8d280a2ef1f065737ebfc1d1e9a"
+        },
+        {
+          "role": "standard_terms",
+          "path": "Mutual-NDA/Mutual-NDA.md",
+          "source_url": "https://github.com/CommonPaper/Mutual-NDA/blob/2a3068b6c0ab6015c440f541d5b215bc3ac2f4cb/Mutual-NDA.md",
+          "git_blob_sha1": "709a94c90b6ada18757b21b37975984ea39c4819",
+          "sha256": "51accb97035821280371ff3088871e3866927ef0ce60e64ed5244883f11b6cfe"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "partnership-agreement",
+      "name": "Partnership Agreement",
+      "description": "Terms for business cooperation, mutual obligations, and related payments.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/Partnership-Agreement",
+        "commit": "6edeb5a285206893cfd0ac482267db44d90f317c",
+        "license_notice": {
+          "path": "Partnership-Agreement/README.md",
+          "url": "https://github.com/CommonPaper/Partnership-Agreement/blob/6edeb5a285206893cfd0ac482267db44d90f317c/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "Partnership-Agreement/Partnership-Agreement.md",
+          "source_url": "https://github.com/CommonPaper/Partnership-Agreement/blob/6edeb5a285206893cfd0ac482267db44d90f317c/Partnership-Agreement.md",
+          "git_blob_sha1": "9ffa95145caf2de7740e6fc9ef7ab08d21d09ea8",
+          "sha256": "87400796568ab676c324b9a5f561432dd3f0f8114ef68a748ab188f642912da3"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "pilot-agreement",
+      "name": "Pilot Agreement",
+      "description": "Terms for a prospective customer's limited evaluation of a product.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/Pilot-Agreement",
+        "commit": "5e7cdd4678cd9d6b3178872cce4a01d632f41f14",
+        "license_notice": {
+          "path": "Pilot-Agreement/README.md",
+          "url": "https://github.com/CommonPaper/Pilot-Agreement/blob/5e7cdd4678cd9d6b3178872cce4a01d632f41f14/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "Pilot-Agreement/Pilot-Agreement.md",
+          "source_url": "https://github.com/CommonPaper/Pilot-Agreement/blob/5e7cdd4678cd9d6b3178872cce4a01d632f41f14/Pilot-Agreement.md",
+          "git_blob_sha1": "723f7df59b4cf24d8d7a0e312d49ef02bf951997",
+          "sha256": "a7cf8decf157093a0d0acd1f35668980c7667e06de6aae3798b996397752b0c3"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "professional-services-agreement",
+      "name": "Professional Services Agreement",
+      "description": "Terms for professional services, statements of work, and deliverables.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/PSA",
+        "commit": "3fb650a72d229f6d6e6d64abebae5e83c6699535",
+        "license_notice": {
+          "path": "PSA/README.md",
+          "url": "https://github.com/CommonPaper/PSA/blob/3fb650a72d229f6d6e6d64abebae5e83c6699535/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "PSA/psa.md",
+          "source_url": "https://github.com/CommonPaper/PSA/blob/3fb650a72d229f6d6e6d64abebae5e83c6699535/psa.md",
+          "git_blob_sha1": "f761ace9b08b07661928f9837ce6a0349fa3d086",
+          "sha256": "cc11a7dd556e0c1512aed33516dd9d283e5db276e55123a142706ef3ec7f0f1e"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "service-level-agreement",
+      "name": "Service Level Agreement",
+      "description": "Service availability, support response targets, and service credit terms for a cloud service.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/SLA",
+        "commit": "5b0e6336f058a66c4976d70ecabf1f5fb9ef3af4",
+        "license_notice": {
+          "path": "SLA/README.md",
+          "url": "https://github.com/CommonPaper/SLA/blob/5b0e6336f058a66c4976d70ecabf1f5fb9ef3af4/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "SLA/sla.md",
+          "source_url": "https://github.com/CommonPaper/SLA/blob/5b0e6336f058a66c4976d70ecabf1f5fb9ef3af4/sla.md",
+          "git_blob_sha1": "f4f95326377a088b5b50bccea1379ccc2a7da47c",
+          "sha256": "6dd783192c644bdc1f00849d27e294578af11cd06148c7b566805ebef38f026a"
+        }
+      ],
+      "modifications": "none"
+    },
+    {
+      "id": "software-license-agreement",
+      "name": "Software License Agreement",
+      "description": "Terms for licensing, installing, and using software.",
+      "language": "en",
+      "author": "Common Paper",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "source": {
+        "repository": "https://github.com/CommonPaper/Software-License-Agreement",
+        "commit": "8ea7de38148a8a0c235b7aaf31487028c2e519ca",
+        "license_notice": {
+          "path": "Software-License-Agreement/README.md",
+          "url": "https://github.com/CommonPaper/Software-License-Agreement/blob/8ea7de38148a8a0c235b7aaf31487028c2e519ca/README.md"
+        }
+      },
+      "documents": [
+        {
+          "role": "standard_terms",
+          "path": "Software-License-Agreement/Software-License-Agreement.md",
+          "source_url": "https://github.com/CommonPaper/Software-License-Agreement/blob/8ea7de38148a8a0c235b7aaf31487028c2e519ca/Software-License-Agreement.md",
+          "git_blob_sha1": "946617bc4aeb9c97e4da65674d9d866da7f88a07",
+          "sha256": "808bc3662d7e65b9d52ae3b76cf0a0b71a4c5be2e41191871b37453895840365"
+        }
+      ],
+      "modifications": "none"
+    }
+  ]
+}
