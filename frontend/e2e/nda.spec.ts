@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 
+async function enter(page: Page) {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+}
+
 async function complete(page: Page) {
   for (const [index, party] of [
     { company: "Acme & José, Inc.", name: "José Silva", title: "CEO", address: "jose@example.com" },
@@ -21,7 +26,7 @@ test("validates, updates the preview, and downloads the complete selectable-text
   const requests: string[] = [];
   page.on("pageerror", error => pageErrors.push(error.message));
   page.on("request", request => requests.push(request.url()));
-  await page.goto("/");
+  await enter(page);
   const today = await page.evaluate(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -65,16 +70,19 @@ test("validates, updates the preview, and downloads the complete selectable-text
     expect(text).toContain(required);
   }
   expect(pageErrors).toEqual([]);
-  expect(requests.every(url => new URL(url).origin === "http://127.0.0.1:3000")).toBe(true);
+  const origin = new URL(page.url()).origin;
+  expect(requests.every(url => new URL(url).origin === origin)).toBe(true);
   expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
   await loadingTask.destroy();
   await page.reload();
+  await expect(page.getByRole("heading", { name: "Welcome to Prelegal" })).toBeVisible();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
   await expect(page.getByLabel("Company / legal name", { exact: true }).first()).toHaveValue("");
 });
 
 test("handles long input, indefinite options and the mobile layout", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await enter(page);
   await complete(page);
   await page.getByLabel("Company / legal name", { exact: true }).first().fill("Société très longue de recherche et de développement ".repeat(8));
   await page.getByLabel("Agreement duration", { exact: true }).selectOption("indefinite");
@@ -90,7 +98,7 @@ test("handles long input, indefinite options and the mobile layout", async ({ pa
 });
 
 test("allows keyboard navigation and a failed download can be retried", async ({ page }) => {
-  await page.goto("/");
+  await enter(page);
   await page.getByLabel("Company / legal name", { exact: true }).first().focus();
   await page.keyboard.press("Tab");
   await expect(page.getByLabel("Signatory name", { exact: true }).first()).toBeFocused();

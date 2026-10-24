@@ -1,6 +1,8 @@
 # Prelegal frontend
 
-Next.js App Router and TypeScript prototype for [KAN-6](https://josemslopes.atlassian.net/browse/KAN-6).
+Next.js App Router and TypeScript frontend, statically exported for the Go runtime
+in [KAN-7](https://josemslopes.atlassian.net/browse/KAN-7). Select **Continue** on the
+demo login screen to enter the builder; no credentials or account are required.
 Complete both parties' details, purpose, timing, governing US state, court location,
 and optional modifications. Review the live agreement and download a selectable-text
 PDF with the cover page, blank signature/date lines, all 11 standard clauses, and
@@ -8,35 +10,41 @@ source/license attribution.
 
 ## Docker Compose
 
-Run all commands from the repository root. Docker Engine and Docker Compose are
+Run all commands from the repository root. Make, Docker Engine, and Docker Compose are
 the only host requirements. Node.js, npm, dependencies, and test browsers run in
 containers. The first build needs internet access to download them.
 
 ```sh
-docker compose up --build frontend
+make start
 ```
 
-Open <http://localhost:3000>. Source edits reload automatically. The server binds
-to host loopback only; use `FRONTEND_PORT=3001 docker compose up --build frontend`
-to select a different local port. Dependencies and Next.js output use named volumes,
-while the shared template dataset is mounted read-only.
+Open <http://localhost:8000>. Go serves both the API and exported frontend. Rebuild
+with `make start` after source changes. The server binds to host loopback only;
+use `APP_PORT=8001 make start` to select a different local port.
+
+For optional frontend hot reload, run
+`docker compose --profile dev up --build frontend` and open
+<http://localhost:3000>. Use `FRONTEND_PORT=3001` for another local port.
+Dependencies and Next.js output use named volumes; templates are mounted read-only.
 
 ```sh
 # Lint, unit tests, production build, and TypeScript checks
 docker compose --profile test run --build --rm checks
 
-# Production-server browser tests with container-installed Chromium
+# Browser tests against the Go-served app with container-installed Chromium
 docker compose --profile test run --build --rm e2e
 
 # Stop this project's containers and network, retaining dependency caches
-docker compose down
+make stop
 ```
 
-The test image installs Chromium and its Linux libraries. Browser tests start
-their own production server inside the container and do not need the development
-service running. Downloaded PDFs are parsed to verify selectable text, completed
-values, standard terms, and attribution. Screenshots/traces remain inside the
-test container; omit `--rm` and use `docker compose cp` to retain them for review.
+The test image installs Chromium and its Linux libraries. Compose builds and starts
+the application dependency and waits for its health check before browser tests.
+Downloaded PDFs are parsed to verify selectable text, completed values, standard
+terms, and attribution. Tests also cover demo entry, reload reset, mobile layout,
+and API/static routing. Screenshots/traces remain inside the test container; omit
+`--rm` and use `docker compose cp` to retain them for review. `make test` runs all
+frontend checks, Go race tests, and browser tests.
 
 ## Dependencies and local commands
 
@@ -52,22 +60,27 @@ The tooling service writes as UID/GID 1000 by default. Set `LOCAL_UID` and
 development, rebuild, and synchronize its dependency volume:
 
 ```sh
-docker compose stop frontend
-docker compose build frontend
-docker compose run --rm frontend npm ci
-docker compose up frontend
+docker compose --profile dev stop frontend
+docker compose --profile dev build frontend
+docker compose --profile dev run --rm frontend npm ci
+docker compose --profile dev up frontend
 ```
 
 For optional host development, use Node.js 22.13+ and run `npm ci` in `frontend/`.
-Scripts are `npm run dev`, `npm run build`, `npm start`, `npm run lint`,
-`npm run typecheck`, `npm test`, and `npm run test:e2e`. Run a production build
-before browser tests. For host browser tests also run `npx playwright install --with-deps chromium`.
+Scripts are `npm run dev`, `npm run build`, `npm run lint`, `npm run typecheck`,
+`npm test`, and `npm run test:e2e`. `npm run build` produces `out/`; the Go server
+serves that directory. `next start` is not used for static exports. Host browser
+tests default to the running application at `http://127.0.0.1:8000`; override with
+`PLAYWRIGHT_BASE_URL`. For host browser tests also run
+`npx playwright install --with-deps chromium`.
 
 ## Data and templates
 
-Form data stays in React memory. There are no application APIs, accounts, database,
-saved drafts, cookies, analytics, or submissions of agreement details. Reloading
-clears the form. PDF generation runs in the browser, with a lazily loaded renderer
+Form data and demo entry stay in React memory. There are no accounts, saved
+drafts, cookies, analytics, or submissions of agreement details. The backend
+exposes a health API and initializes an empty temporary SQLite users table;
+neither is used to persist UI data. Reloading clears the form and returns to
+demo login. PDF generation runs in the browser, with a lazily loaded renderer
 and bundled Noto Sans fonts; see [font provenance and license](public/fonts/README.md).
 
 The build reads the `mutual-nda` catalog entry in `../templates/catalog.json` and
