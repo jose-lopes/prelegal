@@ -1,0 +1,28 @@
+Common Paper template attribution and license
+
+The agreement Markdown files and upstream README.md files in the agreement
+subdirectories of templates/ are authored by Common Paper and are licensed under
+Creative Commons Attribution 4.0 International (SPDX: CC-BY-4.0).
+
+Creator: Common Paper
+Creator website: https://commonpaper.com/
+Source organization: https://github.com/CommonPaper
+License: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+
+The documents were copied without modifications. Original formatting, embedded
+markup, notices, and line endings are retained. Each agreement directory contains
+the upstream README.md with its license declaration. catalog.json identifies the
+source repository, exact commit, and original URL for every agreement document.
+
+Attribution: Common Paper, the agreement title and source URL listed in
+catalog.json, licensed under CC BY 4.0. When sharing these documents, retain the
+attribution and license information. When adapting them, indicate your changes
+and retain notices of previous modifications.
+
+Common Paper does not endorse this project. The material is provided as-is,
+without warranties, under the disclaimer and limitation of liability in the
+linked license. No trademark rights are granted by that license.
+
+The root LICENSE applies to this project's original material. It does not
+relicense the Common Paper documents under MIT.
