@@ -26,6 +26,7 @@ FROM backend-source AS backend-build
 RUN CGO_ENABLED=0 go build -trimpath -o /app/prelegal .
 
 FROM debian:bookworm-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=backend-build /app/prelegal /app/prelegal
 COPY --from=frontend-build /app/frontend/out /app/frontend

@@ -21,7 +21,7 @@ func TestHTTPRoutes(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	handler := newHandler(db, dir)
+	handler := newHandler(db, dir, chatHandler(nil))
 	for _, tc := range []struct {
 		path   string
 		status int

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func newHandler(db *sql.DB, staticDir string) http.Handler {
+func newHandler(db *sql.DB, staticDir string, chat http.Handler) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
@@ -21,6 +21,7 @@ func newHandler(db *sql.DB, staticDir string) http.Handler {
 		w.Write([]byte("{\"status\":\"ok\"}\n"))
 	})
 	mux.HandleFunc("/api/", http.NotFound)
+	mux.Handle("POST /api/chat", chat)
 	mux.Handle("/", http.FileServer(http.Dir(staticDir)))
 	return mux
 }

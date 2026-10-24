@@ -1,25 +1,7 @@
 import { readFile } from "node:fs/promises";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-async function enter(page: Page) {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
-}
-
-async function complete(page: Page) {
-  for (const [index, party] of [
-    { company: "Acme & José, Inc.", name: "José Silva", title: "CEO", address: "jose@example.com" },
-    { company: "Studio North", name: "Zoë North", title: "Director", address: "123 Main St\nNew Castle, DE" },
-  ].entries()) {
-    await page.getByLabel("Company / legal name", { exact: true }).nth(index).fill(party.company);
-    await page.getByLabel("Signatory name", { exact: true }).nth(index).fill(party.name);
-    await page.getByLabel("Signatory title", { exact: true }).nth(index).fill(party.title);
-    await page.getByLabel("Notice address", { exact: true }).nth(index).fill(party.address);
-  }
-  await page.getByLabel("Effective date", { exact: true }).fill("2026-10-24");
-  await page.getByLabel("Governing US state").selectOption("Delaware");
-  await page.getByLabel("Court location").fill("New Castle County, Delaware");
-}
+import { complete, completed, enter, replyWith, say } from "./chat-fixtures";
 
 test("validates, updates the preview, and downloads the complete selectable-text PDF", async ({ page }) => {
   const pageErrors: string[] = [];
@@ -27,16 +9,9 @@ test("validates, updates the preview, and downloads the complete selectable-text
   page.on("pageerror", error => pageErrors.push(error.message));
   page.on("request", request => requests.push(request.url()));
   await enter(page);
-  const today = await page.evaluate(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-  });
-  await expect(page.getByLabel("Effective date", { exact: true })).toHaveValue(today);
   const downloadButton = page.locator(".primary-button");
   await expect(downloadButton).toBeDisabled();
-  await page.getByRole("button", { name: "Check required fields" }).click();
-  await expect(page.getByLabel("Company / legal name", { exact: true }).first()).toBeFocused();
-  await expect(page.locator(".field-error").first()).toBeVisible();
+  await expect(page.getByRole("log")).toContainText("Let’s create a mutual NDA");
   await complete(page);
   const preview = page.getByRole("article", { name: "Completed NDA preview" });
   await expect(preview).toContainText("Acme & José, Inc.");
@@ -45,7 +20,8 @@ test("validates, updates the preview, and downloads the complete selectable-text
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
   await page.screenshot({ path: "test-results/desktop-nda.png", fullPage: false });
   const literal = '<script>window.injected=true</script> A & B <Co>.';
-  await page.getByLabel("MNDA modifications").fill(literal);
+  await replyWith(page, { ...completed(), modifications: literal });
+  await say(page, `Set modifications to: ${literal}`);
   await expect(preview).toContainText(literal);
   const downloadPromise = page.waitForEvent("download");
   await downloadButton.click();
@@ -77,16 +53,16 @@ test("validates, updates the preview, and downloads the complete selectable-text
   await page.reload();
   await expect(page.getByRole("heading", { name: "Welcome to Prelegal" })).toBeVisible();
   await page.getByRole("button", { name: "Continue", exact: true }).click();
-  await expect(page.getByLabel("Company / legal name", { exact: true }).first()).toHaveValue("");
+  await expect(page.getByRole("log")).not.toContainText("Acme");
+  await expect(page.locator(".primary-button")).toBeDisabled();
 });
 
 test("handles long input, indefinite options and the mobile layout", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await enter(page);
   await complete(page);
-  await page.getByLabel("Company / legal name", { exact: true }).first().fill("Société très longue de recherche et de développement ".repeat(8));
-  await page.getByLabel("Agreement duration", { exact: true }).selectOption("indefinite");
-  await page.getByLabel("Confidentiality duration", { exact: true }).selectOption("perpetual");
+  await replyWith(page, { ...completed(), party1: { ...completed().party1, company: "Société très longue de recherche et de développement ".repeat(8) }, termMode: "indefinite", termYears: "", confidentialityMode: "perpetual", confidentialityYears: "" });
+  await say(page, "Use the long legal name, continue until terminated and protect confidentiality in perpetuity.");
   const preview = page.getByRole("article", { name: "Completed NDA preview" });
   await expect(preview).toContainText("Continues until terminated");
   await expect(preview).toContainText("In perpetuity.");
@@ -99,14 +75,15 @@ test("handles long input, indefinite options and the mobile layout", async ({ pa
 
 test("allows keyboard navigation and a failed download can be retried", async ({ page }) => {
   await enter(page);
-  await page.getByLabel("Company / legal name", { exact: true }).first().focus();
+  await page.getByLabel("Your message", { exact: true }).focus();
+  await page.getByLabel("Your message", { exact: true }).fill("Hello");
   await page.keyboard.press("Tab");
-  await expect(page.getByLabel("Signatory name", { exact: true }).first()).toBeFocused();
+  await expect(page.getByRole("button", { name: "Send message" })).toBeFocused();
   await complete(page);
   await page.route("**/fonts/*.ttf", route => route.abort());
   await page.locator(".primary-button").click();
-  await expect(page.getByRole("status")).toContainText("could not be created", { timeout: 30_000 });
-  await expect(page.getByLabel("Company / legal name", { exact: true }).first()).toHaveValue("Acme & José, Inc.");
+  await expect(page.locator(".download-status")).toContainText("could not be created", { timeout: 30_000 });
+  await expect(page.getByRole("article")).toContainText("Acme & José, Inc.");
   await page.unroute("**/fonts/*.ttf");
   const downloadPromise = page.waitForEvent("download", { timeout: 30_000 });
   await page.getByRole("button", { name: "Retry download" }).click();

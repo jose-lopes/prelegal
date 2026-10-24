@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Mutual NDA creator | Prelegal",
-  description: "Create, preview, and download a mutual non-disclosure agreement. Your details stay in your browser.",
+  description: "Chat with AI to draft a mutual non-disclosure agreement, review the live preview, and download a PDF.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

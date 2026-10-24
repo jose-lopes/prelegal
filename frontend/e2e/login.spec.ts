@@ -11,7 +11,7 @@ test("demo login supports keyboard access without creating browser storage", asy
   await page.keyboard.press("Tab");
   await expect(page.getByRole("button", { name: "Continue", exact: true })).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page.getByLabel("Company / legal name", { exact: true }).first()).toBeVisible();
+  await expect(page.getByLabel("Your message", { exact: true })).toBeVisible();
   expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
   expect(await page.context().cookies()).toEqual([]);
   expect(pageErrors).toEqual([]);
@@ -24,7 +24,7 @@ test("demo login fits a mobile viewport", async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: "test-results/mobile-login.png", fullPage: true });
   await page.getByRole("button", { name: "Continue", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Agreement details" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Draft with AI" })).toBeVisible();
 });
 
 test("Go serves API health and missing routes alongside the exported frontend", async ({ request }) => {

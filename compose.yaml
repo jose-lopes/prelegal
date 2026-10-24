@@ -11,6 +11,8 @@ services:
       - "127.0.0.1:${APP_PORT:-8000}:8000"
     tmpfs:
       - /tmp
+    environment:
+      OPENROUTER_PM_API_KEY: ${OPENROUTER_PM_API_KEY:-}
 
   frontend:
     profiles: ["dev"]
@@ -23,6 +25,10 @@ services:
       - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
     environment:
       NEXT_TELEMETRY_DISABLED: "1"
+      API_PROXY_URL: http://app:8000
+    depends_on:
+      app:
+        condition: service_healthy
     volumes:
       - ./frontend:/app/frontend
       - ./templates:/app/templates:ro

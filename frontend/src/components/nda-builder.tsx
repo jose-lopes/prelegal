@@ -1,123 +1,103 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { assembleDocument, initialForm, localDate, STATES, validate, type Field, type NdaForm, type Party, type Template } from "@/lib/nda";
+import { assembleDocument, type Template } from "@/lib/nda";
+import { initialChatForm, requiredDetails, sendChat, WELCOME, type ChatMessage } from "@/lib/chat";
 import { DocumentPreview } from "./document-preview";
 
-type Status = "idle" | "loading" | "error";
-
 export function NdaBuilder({ template }: { template: Template }) {
-  const [form, setForm] = useState(initialForm);
-  const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
-  const [attempted, setAttempted] = useState(false);
-  const [status, setStatus] = useState<Status>("idle");
+  const [form, setForm] = useState(initialChatForm);
+  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: WELCOME }]);
+  const [text, setText] = useState("");
+  const [pending, setPending] = useState("");
+  const [chatError, setChatError] = useState("");
+  const [pdfStatus, setPdfStatus] = useState<"idle" | "loading" | "error">("idle");
+  const busy = useRef(false);
   const downloading = useRef(false);
-  const errors = validate(form);
-  const complete = Object.keys(errors).length === 0;
+  const request = useRef<AbortController | null>(null);
+  const transcript = useRef<HTMLDivElement>(null);
+  const composer = useRef<HTMLTextAreaElement>(null);
+  const missing = requiredDetails(form);
+  const complete = missing.length === 0;
   const document = assembleDocument(form, template);
-  // Use the browser's date, not the build server's clock or timezone.
-  useEffect(() => { setForm(current => ({ ...current, effectiveDate: localDate() })); }, []);
 
-  function update(field: Field, text: string) {
-    setStatus("idle");
-    if (field.startsWith("party")) {
-      const [party, key] = field.split(".") as ["party1" | "party2", keyof Party];
-      setForm(current => ({ ...current, [party]: { ...current[party], [key]: text } }));
-    } else {
-      setForm(current => ({ ...current, [field]: text }));
+  useEffect(() => () => request.current?.abort(), []);
+  useEffect(() => {
+    if (transcript.current) transcript.current.scrollTop = transcript.current.scrollHeight;
+  }, [messages, pending]);
+  useEffect(() => {
+    // Wait until React has re-enabled the composer before restoring keyboard focus.
+    if (!pending && request.current) composer.current?.focus();
+  }, [pending]);
+
+  async function send() {
+    if (busy.current || !text.trim()) return;
+    busy.current = true;
+    const content = text.trim();
+    const conversation: ChatMessage[] = [...messages, { role: "user", content }];
+    setPending(content);
+    setChatError("");
+    request.current = new AbortController();
+    try {
+      const result = await sendChat(conversation, form, request.current.signal);
+      setForm(result.form);
+      setMessages([...conversation, { role: "assistant", content: result.reply }]);
+      setText("");
+      setPdfStatus("idle");
+    } catch (error) {
+      if (!request.current.signal.aborted) {
+        setChatError(error instanceof Error ? error.message : "Unable to send your message. Please retry.");
+      }
+    } finally {
+      setPending("");
+      busy.current = false;
     }
   }
 
   async function download() {
-    if (downloading.current) return;
-    setAttempted(true);
-    if (!complete) {
-      window.document.getElementById(Object.keys(errors)[0])?.focus();
-      return;
-    }
+    if (!complete || busy.current || downloading.current) return;
     downloading.current = true;
-    setStatus("loading");
+    setPdfStatus("loading");
     try {
       const { downloadPdf } = await import("@/lib/pdf");
       await downloadPdf(document, form.effectiveDate);
-      setStatus("idle");
-    } catch (error) {
-      console.error("Unable to generate the NDA PDF.", error);
-      setStatus("error");
+      setPdfStatus("idle");
+    } catch {
+      setPdfStatus("error");
     } finally {
       downloading.current = false;
     }
   }
 
-  const fieldError = (field: Field) => (attempted || touched[field]) ? errors[field] : undefined;
-
-  function input(field: Field, label: string, options: { textarea?: boolean; type?: string; placeholder?: string; optional?: boolean; hint?: string } = {}) {
-    const text = field.startsWith("party") ? (() => { const [p, k] = field.split(".") as ["party1" | "party2", keyof Party]; return form[p][k]; })() : form[field as Exclude<keyof NdaForm, "party1" | "party2">];
-    const error = fieldError(field);
-    const props = {
-      id: field, name: field, value: text, required: !options.optional,
-      onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => update(field, event.target.value),
-      onBlur: () => setTouched(current => ({ ...current, [field]: true })),
-      "aria-invalid": !!error, "aria-describedby": error ? `${field}-error` : options.hint ? `${field}-hint` : undefined,
-      placeholder: options.placeholder,
-    };
-    return <div className="field" key={field}>
-      <label htmlFor={field}>{label}{options.optional && <span className="optional">Optional</span>}</label>
-      {options.textarea ? <textarea {...props} rows={field === "modifications" ? 3 : 2} /> : <input {...props} type={options.type || "text"} {...(options.type === "number" ? { min: 1, step: 1 } : {})} />}
-      {error ? <p className="field-error" id={`${field}-error`}>{error}</p> : options.hint ? <p className="field-hint" id={`${field}-hint`}>{options.hint}</p> : null}
-    </div>;
-  }
-
-  function group(number: string, title: string, subtitle: string, children: ReactNode) {
-    return <fieldset className="form-section"><legend><span className="step-number">{number}</span>{title}</legend><p className="section-subtitle">{subtitle}</p>{children}</fieldset>;
-  }
-
-  function duration(kind: "term" | "confidentiality") {
-    const isTerm = kind === "term";
-    const modeField = isTerm ? "termMode" : "confidentialityMode";
-    const yearsField = isTerm ? "termYears" : "confidentialityYears";
-    const label = isTerm ? "Agreement duration" : "Confidentiality duration";
-    return <div className="duration-group"><label htmlFor={modeField}>{label}</label>
-      <div className="duration-row"><select id={modeField} value={form[modeField]} onChange={event => update(modeField, event.target.value)}>
-        <option value="fixed">Fixed duration</option><option value={isTerm ? "indefinite" : "perpetual"}>{isTerm ? "Until terminated" : "In perpetuity"}</option>
-      </select>{form[modeField] === "fixed" && input(yearsField, isTerm ? "Agreement years" : "Confidentiality years", { type: "number" })}</div>
-      <p className="field-hint">{isTerm ? "Measured from the effective date." : "Fixed terms protect trade secrets for as long as they remain trade secrets."}</p>
-    </div>;
-  }
-
-  return <>
-    <header className="site-header"><Link className="brand" href="/" aria-label="Prelegal home"><span className="brand-symbol" aria-hidden="true">p.</span>prelegal<span className="prototype-tag">PROTOTYPE</span></Link><span className="privacy-note"><span aria-hidden="true">◈</span> Your details stay in your browser</span></header>
+  return <div className="chat-builder">
+    <header className="site-header"><Link className="brand" href="/" aria-label="Prelegal home"><span className="brand-symbol" aria-hidden="true">p.</span>prelegal<span className="prototype-tag">PROTOTYPE</span></Link><span className="privacy-note">AI-assisted Mutual NDA</span></header>
     <main>
-      <div className="intro"><div><p className="eyebrow">A CLEAR START TO YOUR NEXT CONVERSATION</p><h1>Keep your ideas<br className="mobile-break" /> in confidence.</h1><p className="intro-copy">Create a mutual NDA in a few simple steps. Add your details,<br className="desktop-break" /> review the agreement, and download a ready-to-sign PDF.</p></div><div className="template-badge"><span className="badge-icon" aria-hidden="true">↗</span><div>Built on Common Paper<small>Mutual NDA · Version 1.0</small></div></div></div>
+      <div className="intro"><div><p className="eyebrow">A CLEAR START TO YOUR NEXT CONVERSATION</p><h1>Talk it through.<br />Put it in writing.</h1><p className="intro-copy">Tell us about your agreement. Your AI assistant will ask for what’s missing<br className="desktop-break" /> and fill the mutual NDA as you chat.</p></div><div className="template-badge"><span className="badge-icon" aria-hidden="true">↗</span><div>Built on Common Paper<small>Mutual NDA · Version 1.0</small></div></div></div>
       <div className="workspace">
-        <div className="form-panel"><div className="panel-heading"><h2>Agreement details</h2><span>01 — 04</span></div>
-          <form noValidate onSubmit={event => { event.preventDefault(); void download(); }}>
-            {group("01", "The parties", "Who will be sharing confidential information?", <>
-              {(["party1", "party2"] as const).map((party, index) => <div className="party-fields" key={party}><h3>PARTY {index + 1}</h3>
-                {input(`${party}.company`, "Company / legal name", { placeholder: index === 0 ? "e.g. Acme, Inc." : "e.g. Studio North, LLC" })}
-                <div className="field-pair">{input(`${party}.name`, "Signatory name", { placeholder: "Full name" })}{input(`${party}.title`, "Signatory title", { placeholder: "e.g. CEO" })}</div>
-                {input(`${party}.address`, "Notice address", { textarea: true, placeholder: "Email or postal address", hint: "Where this party will receive notices under the agreement." })}
-              </div>)}
-            </>)}
-            {group("02", "Purpose & timing", "Define the conversation and how long it stays protected.", <>
-              {input("purpose", "Purpose", { textarea: true })}{input("effectiveDate", "Effective date", { type: "date" })}{duration("term")}{duration("confidentiality")}
-            </>)}
-            {group("03", "Governing law", "Choose the law and courts that govern this agreement.", <>
-              <div className="field"><label htmlFor="governingLaw">Governing US state</label><select id="governingLaw" value={form.governingLaw} required onChange={event => update("governingLaw", event.target.value)} onBlur={() => setTouched(current => ({ ...current, governingLaw: true }))} aria-invalid={!!fieldError("governingLaw")} aria-describedby={fieldError("governingLaw") ? "governingLaw-error" : undefined}><option value="">Select a state</option>{STATES.map(state => <option key={state}>{state}</option>)}</select>{fieldError("governingLaw") && <p id="governingLaw-error" className="field-error">{fieldError("governingLaw")}</p>}</div>
-              {input("jurisdiction", "Court location", { placeholder: "e.g. New Castle County, Delaware", hint: "City or county and state where federal or state courts are located." })}
-            </>)}
-            {group("04", "Modifications", "Add any agreed changes to the standard terms.", input("modifications", "MNDA modifications", { textarea: true, optional: true, placeholder: "Leave blank if there are no modifications." }))}
-            <div className="form-bottom"><p>Signatures and signing dates are left blank for both parties to complete.</p><button className="review-button" type="submit">{complete ? "Download PDF" : "Check required fields"}<span aria-hidden="true">↗</span></button></div>
+        <section className="chat-panel" aria-labelledby="chat-heading">
+          <div className="panel-heading"><h2 id="chat-heading">Draft with AI</h2><span>Mutual NDA</span></div>
+          <p className="chat-privacy">Your messages and agreement details are sent to our AI service to draft your NDA. Prelegal does not save them; reloading clears this session.</p>
+          <div className="chat-transcript" role="log" aria-label="NDA conversation" aria-live="polite" ref={transcript}>
+            {messages.map((message, index) => <div className={`chat-message ${message.role}`} key={index}><strong>{message.role === "user" ? "You" : "Prelegal assistant"}</strong><p>{message.content}</p></div>)}
+            {pending && <div className="chat-message user"><strong>You</strong><p>{pending}</p></div>}
+          </div>
+          <p className="chat-progress" role="status">{pending ? "Updating your NDA…" : complete ? "Your draft is ready to review. You can still ask for changes." : "Share details in any order. Ask for changes at any time."}</p>
+          {chatError && <p className="chat-error" role="alert">{chatError} Your draft and message are still here.</p>}
+          <form className="chat-composer" onSubmit={event => { event.preventDefault(); void send(); }}>
+            <label htmlFor="chat-message">Your message</label>
+            <textarea id="chat-message" ref={composer} value={text} onChange={event => setText(event.target.value)} maxLength={8000} rows={3} placeholder="e.g. We’re Acme and we’re discussing a partnership with Studio North…" disabled={!!pending} required />
+            <button className="chat-send" type="submit" disabled={!!pending || !text.trim() || pdfStatus === "loading"}>{pending ? "Sending…" : chatError ? "Retry message" : "Send message"}<span aria-hidden="true">↗</span></button>
           </form>
-        </div>
-        <section className="preview-panel" aria-labelledby="preview-heading"><div className="preview-toolbar"><div><span className="status-dot" aria-hidden="true" /><h2 id="preview-heading">Document preview</h2></div><span className={complete ? "status-pill ready" : "status-pill"}>{complete ? "Ready to download" : "Draft · Fill in your details"}</span></div>
+          {missing.length > 0 && <details className="chat-missing"><summary>Still needed for your NDA ({missing.length})</summary><ul>{missing.map(label => <li key={label}>{label}</li>)}</ul></details>}
+        </section>
+        <section className="preview-panel" aria-labelledby="preview-heading"><div className="preview-toolbar"><div><span className="status-dot" aria-hidden="true" /><h2 id="preview-heading">Document preview</h2></div><span className={complete ? "status-pill ready" : "status-pill"}>{complete ? "Ready to download" : "Draft · Chat to complete"}</span></div>
           <div className="preview-scroll"><DocumentPreview document={document} /></div>
-          <div className="download-bar"><div><strong>Your mutual NDA</strong><span>Complete cover page + standard terms</span></div><button type="button" className="primary-button" onClick={() => void download()} disabled={!complete || status === "loading"}><span aria-hidden="true">↓</span>{status === "loading" ? "Preparing PDF…" : status === "error" ? "Retry download" : "Download PDF"}</button></div>
-          <div className="download-status" role="status" aria-live="polite">{status === "error" ? "The PDF could not be created. Your details are still here. Please retry." : status === "loading" ? "Creating your PDF in this browser…" : !complete ? "Complete all required fields to download your agreement." : "Ready to download. Your information is not saved."}</div>
+          <div className="download-bar"><div><strong>Your mutual NDA</strong><span>Complete cover page + standard terms</span></div><button type="button" className="primary-button" onClick={() => void download()} disabled={!complete || !!pending || pdfStatus === "loading"}><span aria-hidden="true">↓</span>{pdfStatus === "loading" ? "Preparing PDF…" : pdfStatus === "error" ? "Retry download" : "Download PDF"}</button></div>
+          <div className="download-status" role="status">{pdfStatus === "error" ? "The PDF could not be created. Your details are still here. Please retry." : pdfStatus === "loading" ? "Creating your PDF in this browser…" : !complete ? "The assistant will help you complete the required details." : "Review your draft before downloading. Signatures and signing dates are left blank."}</div>
         </section>
       </div>
       <footer className="site-footer"><span>prelegal <span className="footer-divider">/</span> Less paperwork. More possibility.</span><span>Based on <a href="https://commonpaper.com/standards/mutual-nda/1.0/">Common Paper</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></span></footer>
     </main>
-  </>;
+  </div>;
 }
