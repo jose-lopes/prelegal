@@ -1,5 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import { initialChatForm } from "../src/lib/chat";
+import { flattenNda } from "../src/lib/agreement";
 import type { NdaForm } from "../src/lib/nda";
 
 export function completed(): NdaForm {
@@ -9,10 +10,11 @@ export function completed(): NdaForm {
 export async function enter(page: Page) {
   await page.goto("/");
   await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page.getByLabel("Document type", { exact: true }).selectOption("mutual-nda");
 }
 
 export async function replyWith(page: Page, form: NdaForm, reply = "Your NDA is ready to review.") {
-  await page.route("**/api/chat", route => route.fulfill({ json: { reply, form } }));
+  await page.route("**/api/chat", route => route.fulfill({ json: { reply, documentId: "mutual-nda", suggestedDocumentId: "", fields: Object.entries(flattenNda(form)).map(([id, value]) => ({ id, value })) } }));
 }
 
 export async function say(page: Page, text: string) {

@@ -32,6 +32,7 @@ services:
     volumes:
       - ./frontend:/app/frontend
       - ./templates:/app/templates:ro
+      - ./backend/documents.json:/app/backend/documents.json:ro
       - frontend_dependencies:/app/frontend/node_modules
       - frontend_next:/app/frontend/.next
     command: ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]

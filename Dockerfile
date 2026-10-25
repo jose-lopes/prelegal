@@ -9,6 +9,7 @@ RUN npm ci
 FROM frontend-dependencies AS frontend-build
 COPY --chown=node:node frontend/ ./
 COPY --chown=node:node templates/ /app/templates/
+COPY --chown=node:node backend/documents.json /app/backend/documents.json
 RUN npm run build
 
 FROM golang:1.26-bookworm AS backend-dependencies

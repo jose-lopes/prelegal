@@ -1,3 +1,4 @@
+import { flattenNda } from "../src/lib/agreement";
 import { expect, test } from "@playwright/test";
 import { initialChatForm } from "../src/lib/chat";
 import { complete, completed, enter, replyWith, say } from "./chat-fixtures";
@@ -15,9 +16,9 @@ test("asks follow-up questions, fills partial details, and applies corrections w
   const requestPromise = page.waitForRequest("**/api/chat");
   await say(page, "Actually, the second party’s legal name is North Research, LLC.");
   const payload = (await requestPromise).postDataJSON();
-  expect(payload.messages).toHaveLength(6);
+  expect(payload.messages).toHaveLength(7);
   expect(payload.messages.at(-1).content).toContain("North Research");
-  expect(payload.form.party2.company).toBe("Studio North");
+  expect(payload.drafts["mutual-nda"]["party2.company"]).toBe("Studio North");
   await expect(page.getByRole("article")).toContainText("North Research, LLC");
   await expect(page.getByRole("article")).toContainText("José Silva");
   await expect(page.locator(".primary-button")).toBeEnabled();
@@ -36,7 +37,7 @@ test("a service failure keeps the message and draft and retries without duplicat
   const requestPromise = page.waitForRequest("**/api/chat");
   await page.getByRole("button", { name: "Retry message" }).click();
   await expect(page.getByRole("article")).toContainText("Wilmington, Delaware");
-  expect((await requestPromise).postDataJSON().messages).toHaveLength(4);
+  expect((await requestPromise).postDataJSON().messages).toHaveLength(5);
   await expect(page.getByRole("log").getByText("Change the court location to Wilmington, Delaware.", { exact: true })).toHaveCount(1);
   await expect(page.getByRole("region", { name: "Draft with AI" }).getByRole("alert")).toHaveCount(0);
 });
@@ -50,7 +51,7 @@ test("prevents duplicate sends and downloads while an update is pending", async 
   await page.route("**/api/chat", async route => {
     calls++;
     await waiting;
-    await route.fulfill({ json: { reply: "Updated.", form: { ...completed(), termYears: "5" } } });
+    await route.fulfill({ json: { reply: "Updated.", documentId: "mutual-nda", suggestedDocumentId: "", fields: Object.entries(flattenNda({ ...completed(), termYears: "5" })).map(([id,value]) => ({ id,value })) } });
   });
   await page.getByLabel("Your message").fill("Change the agreement to five years.");
   await page.getByRole("button", { name: "Send message" }).click();
