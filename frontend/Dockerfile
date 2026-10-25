@@ -15,6 +15,7 @@ USER node
 FROM dependencies AS development
 COPY --chown=node:node frontend/ ./
 COPY --chown=node:node templates/ /app/templates/
+COPY --chown=node:node backend/documents.json /app/backend/documents.json
 RUN mkdir -p .next
 EXPOSE 3000
 CMD ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]
@@ -22,4 +23,5 @@ CMD ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]
 FROM browser-dependencies AS browser-tests
 COPY --chown=node:node frontend/ ./
 COPY --chown=node:node templates/ /app/templates/
+COPY --chown=node:node backend/documents.json /app/backend/documents.json
 RUN mkdir -p .next

@@ -2,11 +2,13 @@
 
 A platform for drafting common legal agreements.
 
-## AI drafting (KAN-8)
+## AI drafting (KAN-9)
 
 The [Next.js frontend](frontend/README.md) lets you chat with an AI to fill in a
-Common Paper Mutual NDA, preview the completed agreement, and download a
-ready-to-sign PDF. The assistant asks for missing details and accepts corrections
+Common Paper agreement, preview the completed document, and download a PDF.
+All 11 catalog types are supported through a picker or chat. Unsupported requests
+receive a supported alternative for the user to accept before switching. Each
+document type keeps its own draft in session memory. The assistant asks for missing details and accepts corrections
 in any order. A demo
 login screen opens the builder with **Continue**. There is no authentication.
 Chat and agreement details are sent to OpenRouter/NVIDIA to process each message.
@@ -35,9 +37,12 @@ backend in `backend/`. One non-root application container serves the UI, bundled
 fonts, and API on port 8000. `GET /api/health` checks the SQLite connection and
 returns `200 {"status":"ok"}` or `503 {"status":"unavailable"}`.
 
-`POST /api/chat` accepts `{messages, form}` and returns `{reply, form}`. The Go
+`POST /api/chat` accepts `{messages, documentId, drafts}` and returns
+`{reply, documentId, suggestedDocumentId, fields}`. Drafts are keyed by catalog ID;
+`fields` contains the selected document’s complete `{id, value}` entries. Empty
+document IDs represent the initial unselected state. The Go
 LiteLLM SDK calls `nvidia/nemotron-3-ultra-550b-a55b:free` through OpenRouter,
-routed only to NVIDIA. A forced `update_nda` function call carries a strict JSON
+routed only to NVIDIA. A forced `update_document` function call carries a strict JSON
 schema because this endpoint supports tools but not `response_format`. The server
 validates updates, limits request size and message count, and times out AI calls
 after 60 seconds. Failures preserve the last draft and the unsent message for retry.
@@ -51,8 +56,12 @@ database. No users or agreement details are written by the current UI. Shutdown
 drains HTTP requests, closes the database, and removes its temporary directory.
 
 See the frontend README for optional hot-reload development, browser tests, and
-dependency maintenance. Real accounts, saved drafts, and additional
-document types are future work.
+dependency maintenance. Real accounts and saved drafts are future work.
+External agreements and policies are supplied as chat text or identifying
+references; Prelegal does not upload, fetch, or verify them.
+
+`backend/documents.json` defines document fields and conditional requirements for
+both the Go server and frontend build. Source templates remain unchanged.
 
 Automated tests mock the AI service. To run the optional live integration test
 with synthetic data and your configured key:

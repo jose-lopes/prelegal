@@ -1,8 +1,8 @@
 import { DemoLogin } from "@/components/demo-login";
-import { loadTemplate } from "@/lib/template";
+import { loadTemplates } from "@/lib/template";
 
 export const dynamic = "force-static";
 
 export default function Home() {
-  return <DemoLogin template={loadTemplate()} />;
+  return <DemoLogin templates={loadTemplates()} />;
 }

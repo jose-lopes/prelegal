@@ -11,9 +11,9 @@ test("validates, updates the preview, and downloads the complete selectable-text
   await enter(page);
   const downloadButton = page.locator(".primary-button");
   await expect(downloadButton).toBeDisabled();
-  await expect(page.getByRole("log")).toContainText("Let’s create a mutual NDA");
+  await expect(page.getByRole("log")).toContainText("You selected Mutual Non-Disclosure Agreement");
   await complete(page);
-  const preview = page.getByRole("article", { name: "Completed NDA preview" });
+  const preview = page.getByRole("article", { name: "Completed agreement preview" });
   await expect(preview).toContainText("Acme & José, Inc.");
   await expect(preview).toContainText("October 24, 2026");
   await expect(downloadButton).toBeEnabled();
@@ -63,7 +63,7 @@ test("handles long input, indefinite options and the mobile layout", async ({ pa
   await complete(page);
   await replyWith(page, { ...completed(), party1: { ...completed().party1, company: "Société très longue de recherche et de développement ".repeat(8) }, termMode: "indefinite", termYears: "", confidentialityMode: "perpetual", confidentialityYears: "" });
   await say(page, "Use the long legal name, continue until terminated and protect confidentiality in perpetuity.");
-  const preview = page.getByRole("article", { name: "Completed NDA preview" });
+  const preview = page.getByRole("article", { name: "Completed agreement preview" });
   await expect(preview).toContainText("Continues until terminated");
   await expect(preview).toContainText("In perpetuity.");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

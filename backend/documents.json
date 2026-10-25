@@ -1,0 +1,1473 @@
+[
+  {
+    "id": "ai-addendum",
+    "name": "AI Addendum",
+    "description": "Supplemental terms for AI services, including input, output, and model training.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "1.0",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "training-data",
+        "label": "Training Data",
+        "group": "Cover Page",
+        "when": {
+          "field": "trainingPermission",
+          "value": "permitted"
+        }
+      },
+      {
+        "id": "training-purposes",
+        "label": "Training Purposes",
+        "group": "Cover Page",
+        "when": {
+          "field": "trainingPermission",
+          "value": "permitted"
+        }
+      },
+      {
+        "id": "training-restrictions",
+        "label": "Training Restrictions",
+        "group": "Cover Page",
+        "allowNone": true,
+        "when": {
+          "field": "trainingPermission",
+          "value": "permitted"
+        }
+      },
+      {
+        "id": "improvement-restrictions",
+        "label": "Improvement Restrictions",
+        "group": "Cover Page",
+        "allowNone": true
+      },
+      {
+        "id": "agreement",
+        "label": "Agreement",
+        "group": "Key Terms"
+      },
+      {
+        "id": "ai-services",
+        "label": "AI Services",
+        "group": "Key Terms"
+      },
+      {
+        "id": "trainingPermission",
+        "label": "Allow model training?",
+        "group": "Cover Page",
+        "choices": [
+          "permitted",
+          "not permitted"
+        ]
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "business-associate-agreement",
+    "name": "Business Associate Agreement",
+    "description": "Terms governing a business associate's handling of protected health information under HIPAA.",
+    "roles": [
+      "Provider",
+      "Company"
+    ],
+    "version": "1.0",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Company legal name",
+        "group": "Company"
+      },
+      {
+        "id": "party2.name",
+        "label": "Company signatory",
+        "group": "Company"
+      },
+      {
+        "id": "party2.title",
+        "label": "Company signatory title",
+        "group": "Company"
+      },
+      {
+        "id": "party2.address",
+        "label": "Company notice address",
+        "group": "Company"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "BAA Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "limitations",
+        "label": "Limitations",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "breach-notification-period",
+        "label": "Breach Notification Period",
+        "group": "Key Terms"
+      },
+      {
+        "id": "agreement",
+        "label": "Agreement",
+        "group": "Key Terms"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "cloud-service-agreement",
+    "name": "Cloud Service Agreement",
+    "description": "Standard terms for providing and subscribing to cloud software and services.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "3.0",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "subscription-period",
+        "label": "Subscription Period",
+        "group": "Order Form"
+      },
+      {
+        "id": "technical-support",
+        "label": "Technical Support",
+        "group": "Order Form"
+      },
+      {
+        "id": "dpa",
+        "label": "DPA",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "order-date",
+        "label": "Order Date",
+        "group": "Order Form"
+      },
+      {
+        "id": "non-renewal-notice-date",
+        "label": "Non-Renewal Notice Date",
+        "group": "Order Form"
+      },
+      {
+        "id": "general-cap-amount",
+        "label": "General Cap Amount",
+        "group": "Key Terms"
+      },
+      {
+        "id": "provider-covered-claim",
+        "label": "Provider Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "customer-covered-claim",
+        "label": "Customer Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "governing-law",
+        "label": "Governing Law",
+        "group": "Key Terms"
+      },
+      {
+        "id": "chosen-courts",
+        "label": "Chosen Courts",
+        "group": "Key Terms"
+      },
+      {
+        "id": "cloud-service",
+        "label": "Cloud Service",
+        "group": "Key Terms"
+      },
+      {
+        "id": "fees",
+        "label": "Fees",
+        "group": "Key Terms"
+      },
+      {
+        "id": "payment-process",
+        "label": "Payment Process",
+        "group": "Key Terms"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "data-processing-agreement",
+    "name": "Data Processing Agreement",
+    "description": "Terms governing processing of personal data on behalf of a controller.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "categories-of-personal-data",
+        "label": "Categories of Personal Data",
+        "group": "Key Terms"
+      },
+      {
+        "id": "categories-of-data-subjects",
+        "label": "Categories of Data Subjects",
+        "group": "Key Terms"
+      },
+      {
+        "id": "agreement",
+        "label": "Agreement",
+        "group": "Key Terms"
+      },
+      {
+        "id": "special-category-data",
+        "label": "Special Category Data",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "special-category-data-restrictions-or-safeguards",
+        "label": "Special Category Data Restrictions or Safeguards",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "frequency-of-transfer",
+        "label": "Frequency of Transfer",
+        "group": "Key Terms"
+      },
+      {
+        "id": "nature-and-purpose-of-processing",
+        "label": "Nature and Purpose of Processing",
+        "group": "Key Terms"
+      },
+      {
+        "id": "duration-of-processing",
+        "label": "Duration of Processing",
+        "group": "Key Terms"
+      },
+      {
+        "id": "approved-subprocessors",
+        "label": "Approved Subprocessors",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "governing-member-state",
+        "label": "Governing Member State",
+        "group": "Key Terms"
+      },
+      {
+        "id": "security-policy",
+        "label": "Security Policy",
+        "group": "Key Terms"
+      },
+      {
+        "id": "provider-security-contact",
+        "label": "Provider Security Contact",
+        "group": "Key Terms"
+      },
+      {
+        "id": "data-subject-contact",
+        "label": "Data Subject Contact",
+        "group": "Key Terms"
+      },
+      {
+        "id": "processing-locations",
+        "label": "Processing Locations",
+        "group": "Key Terms"
+      },
+      {
+        "id": "supervisory-authority",
+        "label": "Supervisory Authority",
+        "group": "Key Terms"
+      },
+      {
+        "id": "technical-and-organizational-measures",
+        "label": "Technical and Organizational Measures",
+        "group": "Attachments"
+      },
+      {
+        "id": "subprocessor-details",
+        "label": "Subprocessor Details",
+        "group": "Attachments"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly. Collect processing details for SCC/UK annexes: party activities and contacts, competent supervisory authority, processing locations, technical/organizational measures, and each approved subprocessor name, address, contact and processing activity. Do not claim to verify externally referenced documents."
+  },
+  {
+    "id": "design-partner-agreement",
+    "name": "Design Partner Agreement",
+    "description": "Terms for early product access and feedback from a design partner.",
+    "roles": [
+      "Provider",
+      "Partner"
+    ],
+    "version": "",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Partner legal name",
+        "group": "Partner"
+      },
+      {
+        "id": "party2.name",
+        "label": "Partner signatory",
+        "group": "Partner"
+      },
+      {
+        "id": "party2.title",
+        "label": "Partner signatory title",
+        "group": "Partner"
+      },
+      {
+        "id": "party2.address",
+        "label": "Partner notice address",
+        "group": "Partner"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "term",
+        "label": "Term",
+        "group": "Key Terms"
+      },
+      {
+        "id": "program",
+        "label": "Program",
+        "group": "Key Terms"
+      },
+      {
+        "id": "fees",
+        "label": "Fees",
+        "group": "Key Terms"
+      },
+      {
+        "id": "governing-law",
+        "label": "Governing Law",
+        "group": "Key Terms"
+      },
+      {
+        "id": "chosen-courts",
+        "label": "Chosen Courts",
+        "group": "Key Terms"
+      },
+      {
+        "id": "product",
+        "label": "Product",
+        "group": "Key Terms"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "mutual-nda",
+    "name": "Mutual Non-Disclosure Agreement",
+    "description": "Terms for parties exchanging confidential information while evaluating a business relationship.",
+    "roles": [
+      "Party 1",
+      "Party 2"
+    ],
+    "version": "1.0",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Party 1 legal name",
+        "group": "Party 1"
+      },
+      {
+        "id": "party1.name",
+        "label": "Party 1 signatory",
+        "group": "Party 1"
+      },
+      {
+        "id": "party1.title",
+        "label": "Party 1 signatory title",
+        "group": "Party 1"
+      },
+      {
+        "id": "party1.address",
+        "label": "Party 1 notice address",
+        "group": "Party 1"
+      },
+      {
+        "id": "party2.company",
+        "label": "Party 2 legal name",
+        "group": "Party 2"
+      },
+      {
+        "id": "party2.name",
+        "label": "Party 2 signatory",
+        "group": "Party 2"
+      },
+      {
+        "id": "party2.title",
+        "label": "Party 2 signatory title",
+        "group": "Party 2"
+      },
+      {
+        "id": "party2.address",
+        "label": "Party 2 notice address",
+        "group": "Party 2"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "purpose",
+        "label": "Purpose",
+        "group": "Cover Page"
+      },
+      {
+        "id": "termMode",
+        "label": "MNDA Term",
+        "group": "Cover Page",
+        "choices": [
+          "fixed",
+          "indefinite"
+        ]
+      },
+      {
+        "id": "termYears",
+        "label": "Agreement years",
+        "group": "Cover Page",
+        "type": "years",
+        "when": {
+          "field": "termMode",
+          "value": "fixed"
+        }
+      },
+      {
+        "id": "confidentialityMode",
+        "label": "Term of Confidentiality",
+        "group": "Cover Page",
+        "choices": [
+          "fixed",
+          "perpetual"
+        ]
+      },
+      {
+        "id": "confidentialityYears",
+        "label": "Confidentiality years",
+        "group": "Cover Page",
+        "type": "years",
+        "when": {
+          "field": "confidentialityMode",
+          "value": "fixed"
+        }
+      },
+      {
+        "id": "governingLaw",
+        "label": "Governing Law",
+        "group": "Cover Page",
+        "type": "us-state"
+      },
+      {
+        "id": "jurisdiction",
+        "label": "Jurisdiction",
+        "group": "Cover Page"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "partnership-agreement",
+    "name": "Partnership Agreement",
+    "description": "Terms for business cooperation, mutual obligations, and related payments.",
+    "roles": [
+      "Company",
+      "Partner"
+    ],
+    "version": "1.0",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Company legal name",
+        "group": "Company"
+      },
+      {
+        "id": "party1.name",
+        "label": "Company signatory",
+        "group": "Company"
+      },
+      {
+        "id": "party1.title",
+        "label": "Company signatory title",
+        "group": "Company"
+      },
+      {
+        "id": "party1.address",
+        "label": "Company notice address",
+        "group": "Company"
+      },
+      {
+        "id": "party2.company",
+        "label": "Partner legal name",
+        "group": "Partner"
+      },
+      {
+        "id": "party2.name",
+        "label": "Partner signatory",
+        "group": "Partner"
+      },
+      {
+        "id": "party2.title",
+        "label": "Partner signatory title",
+        "group": "Partner"
+      },
+      {
+        "id": "party2.address",
+        "label": "Partner notice address",
+        "group": "Partner"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "obligations",
+        "label": "Obligations",
+        "group": "Business Terms"
+      },
+      {
+        "id": "payment-process",
+        "label": "Payment Process",
+        "group": "Business Terms"
+      },
+      {
+        "id": "payment-schedule",
+        "label": "Payment Schedule",
+        "group": "Business Terms"
+      },
+      {
+        "id": "territory",
+        "label": "Territory",
+        "group": "Business Terms"
+      },
+      {
+        "id": "brand-guidelines",
+        "label": "Brand Guidelines",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "dpa",
+        "label": "DPA",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "end-date",
+        "label": "End Date",
+        "group": "Business Terms"
+      },
+      {
+        "id": "additional-warranties",
+        "label": "Additional Warranties",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "general-cap-amount",
+        "label": "General Cap Amount",
+        "group": "Key Terms"
+      },
+      {
+        "id": "increased-claims",
+        "label": "Increased Claims",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "increased-cap-amount",
+        "label": "Increased Cap Amount",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "unlimited-claims",
+        "label": "Unlimited Claims",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "company-covered-claim",
+        "label": "Company Covered Claim",
+        "group": "Key Terms"
+      },
+      {
+        "id": "partner-covered-claim",
+        "label": "Partner Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "governing-law",
+        "label": "Governing Law",
+        "group": "Key Terms"
+      },
+      {
+        "id": "chosen-courts",
+        "label": "Chosen Courts",
+        "group": "Key Terms"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "pilot-agreement",
+    "name": "Pilot Agreement",
+    "description": "Terms for a prospective customer's limited evaluation of a product.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "1.1",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "pilot-period",
+        "label": "Pilot Period",
+        "group": "Order Form"
+      },
+      {
+        "id": "general-cap-amount",
+        "label": "General Cap Amount",
+        "group": "Order Form"
+      },
+      {
+        "id": "governing-law",
+        "label": "Governing Law",
+        "group": "Order Form"
+      },
+      {
+        "id": "chosen-courts",
+        "label": "Chosen Courts",
+        "group": "Order Form"
+      },
+      {
+        "id": "product",
+        "label": "Product",
+        "group": "Key Terms"
+      },
+      {
+        "id": "fees",
+        "label": "Fees",
+        "group": "Key Terms"
+      },
+      {
+        "id": "payment-process",
+        "label": "Payment Process",
+        "group": "Key Terms"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "professional-services-agreement",
+    "name": "Professional Services Agreement",
+    "description": "Terms for professional services, statements of work, and deliverables.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "customer-policies",
+        "label": "Customer Policies",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "deliverables",
+        "label": "Deliverables",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "rejection-period",
+        "label": "Rejection Period",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "resubmission-period",
+        "label": "Resubmission Period",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "customer-obligations",
+        "label": "Customer Obligations",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "time-of-assignment",
+        "label": "Time of Assignment",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "dpa",
+        "label": "DPA",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "security-policy",
+        "label": "Security Policy",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "fees",
+        "label": "Fees",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "payment-period",
+        "label": "Payment Period",
+        "group": "Statement of Work"
+      },
+      {
+        "id": "sow-term",
+        "label": "SOW Term",
+        "group": "Key Terms"
+      },
+      {
+        "id": "additional-warranties",
+        "label": "Additional Warranties",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "increased-claims",
+        "label": "Increased Claims",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "increased-cap-amount",
+        "label": "Increased Cap Amount",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "general-cap-amount",
+        "label": "General Cap Amount",
+        "group": "Key Terms"
+      },
+      {
+        "id": "unlimited-claims",
+        "label": "Unlimited Claims",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "provider-covered-claim",
+        "label": "Provider Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "customer-covered-claim",
+        "label": "Customer Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "insurance-minimums",
+        "label": "Insurance Minimums",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "governing-law",
+        "label": "Governing Law",
+        "group": "Key Terms"
+      },
+      {
+        "id": "chosen-courts",
+        "label": "Chosen Courts",
+        "group": "Key Terms"
+      },
+      {
+        "id": "services",
+        "label": "Services",
+        "group": "Key Terms"
+      },
+      {
+        "id": "service-schedule",
+        "label": "Service Schedule",
+        "group": "Key Terms"
+      },
+      {
+        "id": "expenses",
+        "label": "Expenses",
+        "group": "Key Terms"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "service-level-agreement",
+    "name": "Service Level Agreement",
+    "description": "Service availability, support response targets, and service credit terms for a cloud service.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "2.0",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "target-uptime",
+        "label": "Target Uptime",
+        "group": "Order Form",
+        "when": {
+          "field": "uptimeEnabled",
+          "value": "yes"
+        },
+        "type": "percent"
+      },
+      {
+        "id": "subscription-period",
+        "label": "Subscription Period",
+        "group": "Order Form"
+      },
+      {
+        "id": "target-response-time",
+        "label": "Target Response Time",
+        "group": "Order Form",
+        "when": {
+          "field": "responseEnabled",
+          "value": "yes"
+        }
+      },
+      {
+        "id": "support-channel",
+        "label": "Support Channel",
+        "group": "Order Form",
+        "when": {
+          "field": "responseEnabled",
+          "value": "yes"
+        }
+      },
+      {
+        "id": "uptime-credit",
+        "label": "Uptime Credit",
+        "group": "Order Form",
+        "when": {
+          "field": "uptimeEnabled",
+          "value": "yes"
+        }
+      },
+      {
+        "id": "response-time-credit",
+        "label": "Response Time Credit",
+        "group": "Order Form",
+        "when": {
+          "field": "responseEnabled",
+          "value": "yes"
+        }
+      },
+      {
+        "id": "scheduled-downtime",
+        "label": "Scheduled Downtime",
+        "group": "Order Form"
+      },
+      {
+        "id": "agreement",
+        "label": "Agreement",
+        "group": "Key Terms"
+      },
+      {
+        "id": "cloud-service",
+        "label": "Cloud Service",
+        "group": "Key Terms"
+      },
+      {
+        "id": "cloud-service-fees",
+        "label": "Cloud Service Fees",
+        "group": "Key Terms"
+      },
+      {
+        "id": "uptimeEnabled",
+        "label": "Uptime commitment",
+        "group": "Cover Page",
+        "choices": [
+          "yes",
+          "no"
+        ]
+      },
+      {
+        "id": "responseEnabled",
+        "label": "Response-time commitment",
+        "group": "Cover Page",
+        "choices": [
+          "yes",
+          "no"
+        ]
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  },
+  {
+    "id": "software-license-agreement",
+    "name": "Software License Agreement",
+    "description": "Terms for licensing, installing, and using software.",
+    "roles": [
+      "Provider",
+      "Customer"
+    ],
+    "version": "1.1",
+    "fields": [
+      {
+        "id": "party1.company",
+        "label": "Provider legal name",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.name",
+        "label": "Provider signatory",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.title",
+        "label": "Provider signatory title",
+        "group": "Provider"
+      },
+      {
+        "id": "party1.address",
+        "label": "Provider notice address",
+        "group": "Provider"
+      },
+      {
+        "id": "party2.company",
+        "label": "Customer legal name",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.name",
+        "label": "Customer signatory",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.title",
+        "label": "Customer signatory title",
+        "group": "Customer"
+      },
+      {
+        "id": "party2.address",
+        "label": "Customer notice address",
+        "group": "Customer"
+      },
+      {
+        "id": "effectiveDate",
+        "label": "Effective Date",
+        "group": "Cover Page",
+        "type": "date"
+      },
+      {
+        "id": "subscription-period",
+        "label": "Subscription Period",
+        "group": "Order Form"
+      },
+      {
+        "id": "permitted-uses",
+        "label": "Permitted Uses",
+        "group": "Order Form"
+      },
+      {
+        "id": "license-limits",
+        "label": "License Limits",
+        "group": "Order Form"
+      },
+      {
+        "id": "payment-process",
+        "label": "Payment Process",
+        "group": "Order Form"
+      },
+      {
+        "id": "order-date",
+        "label": "Order Date",
+        "group": "Order Form"
+      },
+      {
+        "id": "non-renewal-notice-date",
+        "label": "Non-Renewal Notice Date",
+        "group": "Order Form"
+      },
+      {
+        "id": "deletion-procedure",
+        "label": "Deletion Procedure",
+        "group": "Order Form"
+      },
+      {
+        "id": "additional-warranties",
+        "label": "Additional Warranties",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "warranty-period",
+        "label": "Warranty Period",
+        "group": "Order Form"
+      },
+      {
+        "id": "general-cap-amount",
+        "label": "General Cap Amount",
+        "group": "Key Terms"
+      },
+      {
+        "id": "increased-claims",
+        "label": "Increased Claims",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "increased-cap-amount",
+        "label": "Increased Cap Amount",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "unlimited-claims",
+        "label": "Unlimited Claims",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "provider-covered-claim",
+        "label": "Provider Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "customer-covered-claim",
+        "label": "Customer Covered Claim",
+        "group": "Key Terms",
+        "allowNone": true
+      },
+      {
+        "id": "governing-law",
+        "label": "Governing Law",
+        "group": "Key Terms"
+      },
+      {
+        "id": "chosen-courts",
+        "label": "Chosen Courts",
+        "group": "Key Terms"
+      },
+      {
+        "id": "software",
+        "label": "Software",
+        "group": "Key Terms"
+      },
+      {
+        "id": "fees",
+        "label": "Fees",
+        "group": "Key Terms"
+      },
+      {
+        "id": "services",
+        "label": "Services",
+        "group": "Order Form"
+      },
+      {
+        "id": "modifications",
+        "label": "Modifications",
+        "group": "Cover Page",
+        "optional": true
+      }
+    ],
+    "instructions": "Collect each applicable field from the user. Empty means unanswered. For allowNone fields, ask whether it applies; use None only when the user explicitly declines it. Do not supply default legal or commercial terms. External documents can be supplied as text or an identifying reference. Preserve roles exactly."
+  }
+]

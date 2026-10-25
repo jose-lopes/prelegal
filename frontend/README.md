@@ -1,14 +1,14 @@
 # Prelegal frontend
 
 Next.js App Router and TypeScript frontend, statically exported for the Go runtime
-with AI drafting in [KAN-8](https://josemslopes.atlassian.net/browse/KAN-8). Select
+with AI drafting in [KAN-9](https://josemslopes.atlassian.net/browse/KAN-9). Select
 **Continue** on the demo login screen to enter the builder; no credentials or
-account are required.
-Chat freely about both parties, purpose, timing, governing US state, court location,
-and optional modifications. The assistant asks follow-up questions and fills the
-cover page; you can correct details through chat. Review the live agreement and
-download a selectable-text PDF with the cover page, blank signature/date lines,
-all 11 standard clauses, and source/license attribution.
+account are required. Choose any of the 11 catalog types in the picker or describe
+what you need in chat. The assistant collects document-specific details and accepts
+corrections. Unsupported requests receive an alternative for the user to accept.
+Switching types restores that type's draft without copying terms from another.
+Review the live preview and download a selectable-text PDF with populated cover
+page/details, blank signature/date lines, all standard terms, and attribution.
 
 ## Docker Compose
 
@@ -84,7 +84,7 @@ tests default to the running application at `http://127.0.0.1:8000`; override wi
 ## Data and templates
 
 Chat messages, agreement data and demo entry stay in React memory. Each message
-sends the conversation and current draft to the Go backend, which calls
+sends the conversation, active document ID, and separate session drafts to the Go backend, which calls
 OpenRouter with the NVIDIA Nemotron model. The API key stays on the server. The
 UI discloses AI processing before the first message. There are no accounts, saved
 drafts, cookies or analytics. Prelegal does not persist or log chat or agreement
@@ -93,25 +93,26 @@ users table remains unused by the UI. PDF generation runs in the browser, with a
 lazily loaded renderer and bundled Noto Sans fonts; see
 [font provenance and license](public/fonts/README.md).
 
-The build reads the `mutual-nda` catalog entry in `../templates/catalog.json` and
-loads its cover page and standard terms. Build from the whole repository, as the
-Compose configuration does. Runtime document generation uses a shared model for
-HTML and PDF. It fills the cover page and retains the standard terms' text,
-including defined-term references. Source Markdown is never modified. User input
-is rendered as literal text, never HTML or Markdown. AI populates cover page
-fields only; all 11 standard clauses remain unchanged.
+The build reads all catalog entries in `../templates/catalog.json` and the shared
+field registry in `../backend/documents.json`. Build from the whole repository, as
+the Compose configuration does. Go embeds the registry for runtime validation and
+strict AI function calls. Preview and PDF share the assembled document model.
+Standard terms retain all clauses, nested lists, definitions and references.
+Source Markdown is unchanged. User input is rendered as literal text.
 
-The documents are Common Paper Mutual NDA v1.0 under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-Generated PDFs identify the customized cover page, unchanged standard terms,
-license, and pinned upstream source. See the [dataset documentation](../templates/README.md).
+The Common Paper templates are used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Generated PDFs identify customized cover pages, unchanged terms, license, and
+pinned source. Versions are displayed only when identified by the source template.
+See the [dataset documentation](../templates/README.md).
 
 ## Prototype limits
 
-English documents using US-state governing law. Fixed terms are positive whole
-years measured from the effective date, or users can request indefinite/perpetual
-terms. Dates, durations and purpose must be supplied through the conversation;
-they have no implicit defaults. Signatures and signing dates remain blank for
-execution outside this app. This prototype does
-not recommend legal terms, provide electronic signing, or support other agreement
-types. Bundled fonts cover Latin, Greek, and Cyrillic, including accented names;
-scripts outside that coverage require additional fonts.
+Documents are in English. Each type has its own required inputs and conditional
+terms; the Mutual NDA retains US-state governing law and positive whole-year
+fixed durations. Other document types collect their own law and duration details.
+Dates and commercial/legal choices come from the user. External agreements and
+policies can be provided as text or references; there are no uploads or automatic
+retrieval/verification. Signatures and signing dates remain blank for execution
+outside the app. The prototype does not recommend legal terms or provide electronic
+signing. Bundled fonts cover Latin, Greek and Cyrillic; other scripts require
+additional fonts.
