@@ -42,8 +42,12 @@ func run(ctx context.Context, staticDir string) error {
 		return err
 	}
 	defer cleanup()
+	chat, err := newChatClient(os.Getenv("OPENROUTER_PM_API_KEY"))
+	if err != nil {
+		return fmt.Errorf("configure chat: %w", err)
+	}
 	server := &http.Server{
-		Addr: ":8000", Handler: newHandler(db, staticDir),
+		Addr: ":8000", Handler: newHandler(db, staticDir, chatHandler(chat)),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	result := make(chan error, 1)

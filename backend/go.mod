@@ -2,7 +2,10 @@ module github.com/jose-lopes/prelegal/backend
 
 go 1.26.0
 
-require modernc.org/sqlite v1.61.0
+require (
+	github.com/voocel/litellm v1.9.6
+	modernc.org/sqlite v1.61.0
+)
 
 require (
 	github.com/dustin/go-humanize v1.1.0 // indirect
