@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { expect, type Page } from "@playwright/test";
 import { initialChatForm } from "../src/lib/chat";
 import { flattenNda } from "../src/lib/agreement";
@@ -7,9 +8,15 @@ export function completed(): NdaForm {
   return { ...initialChatForm(), party1: { company: "Acme & José, Inc.", name: "José Silva", title: "CEO", address: "jose@example.com" }, party2: { company: "Studio North", name: "Zoë North", title: "Director", address: "123 Main St\nNew Castle, DE" }, purpose: "Evaluating a research partnership.", effectiveDate: "2026-10-24", termYears: "2", confidentialityYears: "3", governingLaw: "Delaware", jurisdiction: "New Castle County, Delaware" };
 }
 
-export async function enter(page: Page) {
+export async function start(page: Page) {
+  const response = await page.request.post("/api/auth/signup", { data: { email: `test-${randomUUID()}@example.com`, password: "a long test password" } });
+  expect(response.ok()).toBe(true);
   await page.goto("/");
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page.getByRole("button", { name: "+ New agreement", exact: true }).click();
+}
+
+export async function enter(page: Page) {
+  await start(page);
   await page.getByLabel("Document type", { exact: true }).selectOption("mutual-nda");
 }
 

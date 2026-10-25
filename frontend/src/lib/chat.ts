@@ -1,5 +1,6 @@
 import { initialForm, type NdaForm } from "./nda";
 import type { Drafts } from "./agreement";
+import { api } from "./api";
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 export type ChatResponse = { reply: string; documentId: string; suggestedDocumentId: string; fields: { id: string; value: string }[] };
@@ -11,11 +12,8 @@ export function initialChatForm(): NdaForm {
 }
 
 export async function sendChat(messages: ChatMessage[], documentId: string, drafts: Drafts, signal: AbortSignal): Promise<ChatResponse> {
-  const response = await fetch("/api/chat", {
+  return api<ChatResponse>("/api/chat", {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ messages, documentId, drafts }), signal,
   });
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.error || "Unable to send your message. Please retry.");
-  return result;
 }

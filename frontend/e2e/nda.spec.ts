@@ -51,10 +51,11 @@ test("validates, updates the preview, and downloads the complete selectable-text
   expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
   await loadingTask.destroy();
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Welcome to Prelegal" })).toBeVisible();
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
-  await expect(page.getByRole("log")).not.toContainText("Acme");
-  await expect(page.locator(".primary-button")).toBeDisabled();
+  await expect(page.getByRole("heading", { name: "My documents", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: /Mutual Non-Disclosure Agreement.*Open draft/ }).click();
+  await expect(page.getByRole("article")).toContainText("Acme & José, Inc.");
+  await expect(page.getByRole("article")).toContainText(literal);
+  await expect(page.locator(".primary-button")).toBeEnabled();
 });
 
 test("handles long input, indefinite options and the mobile layout", async ({ page }) => {

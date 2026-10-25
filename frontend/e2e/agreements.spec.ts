@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 import { initialDraft, type Draft } from "../src/lib/agreement";
 import { loadTemplates } from "../src/lib/template";
-import { complete, enter, say } from "./chat-fixtures";
+import { complete, enter, say, start } from "./chat-fixtures";
 
 const templates = loadTemplates();
 function fixture(id: string) {
@@ -16,8 +16,7 @@ async function respond(page: Page, documentId: string, draft: Draft, suggestedDo
 }
 
 test("starts unselected and supports selection and partial extraction through chat", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await start(page);
   await expect(page.getByLabel("Document type", { exact: true })).toHaveValue("");
   await expect(page.getByText("Start with your agreement")).toBeVisible();
   await expect(page.locator(".primary-button")).toBeDisabled();
@@ -94,6 +93,12 @@ for (const definition of templates) {
     expect(text).toContain(definition.name);
     expect(text).toContain(fields["party1.company"]);
     expect(text).toContain("CC BY 4.0");
+    expect(text).toContain("These documents are drafts and are subject to legal review.");
+    const history = await (await page.request.get("/api/agreements")).json();
+    expect(history).toHaveLength(1);
+    expect(history[0].documentId).toBe(definition.id);
+    const saved = await (await page.request.get(`/api/agreements/${history[0].id}`)).json();
+    expect(saved.fields).toEqual(fields);
     expect(text).toContain("Signature");
     for (const clause of definition.template.clauses) {
       // All clauses and definitions, including the final one, must survive PDF pagination.

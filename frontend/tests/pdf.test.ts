@@ -29,5 +29,6 @@ it.each(["mutual-nda", "cloud-service-agreement"])("retains party details in a p
   const text = pages.join(" ").replace(/\s+/g, " ");
   for (const party of ["party1", "party2"]) for (const field of ["company", "name", "title", "address"]) expect(text).toContain(fields[`${party}.${field}`]);
   expect(text).toContain("Standard Terms unchanged");
+  expect(text).toContain("These documents are drafts and are subject to legal review.");
   await task.destroy();
 });

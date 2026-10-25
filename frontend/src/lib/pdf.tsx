@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Document, Font, Link, Page, StyleSheet, Text, View, pdf } from "@react-pdf/renderer";
 import { LICENSE_URL } from "./nda";
 import type { AgreementDocument } from "./agreement";
+import { DRAFT_DISCLAIMER } from "./disclaimer";
 
 function registerFonts() {
   // React PDF also resolves Helvetica as a fallback, even for a custom family.
@@ -41,6 +42,7 @@ export function AgreementPdf({ document }: { document: AgreementDocument }) {
   return <Document title={document.title} author="Prelegal · Common Paper">
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>{document.title}</Text><Text style={styles.subtitle}>{document.subtitle} · Common Paper{document.version && ` Version ${document.version}`}</Text>
+      <Text style={styles.paragraph}>DRAFT · {DRAFT_DISCLAIMER}</Text>
       <Text style={styles.paragraph}>{document.introduction}</Text>
       {document.sections.map(section => <View key={section.heading}><Text style={styles.heading} minPresenceAhead={24}>{section.heading}</Text><Text style={styles.paragraph} orphans={2} widows={2}>{section.text}</Text></View>)}
       <Text style={[styles.paragraph, { marginTop: 18 }]}>{document.signingText}</Text>
