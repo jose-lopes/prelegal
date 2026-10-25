@@ -1,11 +1,13 @@
 import { LICENSE_URL } from "@/lib/nda";
 import type { AgreementDocument } from "@/lib/agreement";
+import { DRAFT_DISCLAIMER } from "@/lib/disclaimer";
 
 export function DocumentPreview({ document }: { document: AgreementDocument }) {
   return <article className="document" aria-label="Completed agreement preview">
     <div className="document-kicker">COMMON PAPER{document.version && ` · VERSION ${document.version}`}</div>
     <h2>{document.title}</h2>
     <p className="document-subtitle">Cover Page</p>
+    <p className="document-disclaimer">Draft · {DRAFT_DISCLAIMER}</p>
     <p>{document.introduction}</p>
     {document.sections.map(section => <section key={section.heading}>
       <h3>{section.heading}</h3><p className="preserve-lines">{section.text}</p>

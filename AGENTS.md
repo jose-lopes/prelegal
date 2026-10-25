@@ -1,5 +1,14 @@
 # Prelegal Project
 
+## KAN-10 progress
+
+- Requirements read from [KAN-10](https://josemslopes.atlassian.net/browse/KAN-10); Jira moved to In Progress (Em andamento).
+- Scope: real email/password registration and sign-in, private saved document history and reopening, polished responsive screens, and draft/legal-review disclaimers in the UI and PDFs. Accounts, sessions, and saved documents reset on server restart.
+- Implemented registration/sign-in with salted PBKDF2 password hashes, expiring HttpOnly cookie sessions, sign-out/revocation, cross-origin protection, and authenticated chat. SQLite stores users, hashed sessions, and private agreement fields/titles/timestamps; every startup still starts fresh.
+- Implemented responsive account screens, private document library, partial-draft saving, reopening/updating, automatic saving before PDF downloads, and shared draft/legal-review disclaimers in the UI and PDF cover page. Chat and unsaved changes remain in browser memory.
+- Implementation and validation complete: `make test` passed with Go race tests, frontend lint/build/type checks, 59 frontend unit tests, and 27 Chromium tests. Coverage includes authentication, expiry/revocation, TLS cookies, Unicode passwords, cross-origin rejection, private document access, concurrent saves, restart reset, save/reopen/update, retries, mobile layouts, and complete PDFs with the disclaimer across all 11 types. Desktop/mobile screenshots reviewed; source templates unchanged.
+- PR submission pending on `feat/kan-10-accounts-documents`; Jira remains In Progress (Em andamento).
+
 ## Overview
 
 This project is building a SaaS product for drafting legal agreements from the templates directory. AI chat fills document-specific fields, with picker and chat-based document selection.
@@ -7,7 +16,7 @@ The dataset contains 11 document types, cataloged here:
 
 @templates/catalog.json
 
-The UI supports all 11 catalog types through a free-form AI chat, live preview, and PDF download. Real authentication and document persistence are not implemented.
+The UI supports all 11 catalog types through a free-form AI chat, live preview, and PDF download. Email/password accounts have private saved-document libraries; accounts, sessions, and saved drafts last until the server restarts. All documents are drafts subject to legal review.
 
 ## Development process
 
@@ -30,15 +39,15 @@ There is an OPENROUTER_PM_API_KEY as environment variable.
 
 Docker Compose runs one non-root application container. The Go backend in `backend/` serves the statically exported Next.js frontend from `frontend/` and the API on port 8000.
 
-SQLite runs inside the Go process. Each backend startup creates a fresh database in temporary storage with an empty `users` table (`id`, unique `email`, `created_at`). The current UI does not write users or agreements to it.
+SQLite runs inside the Go process. Each backend startup creates a fresh database in temporary storage with `users` (unique email, salted password hash), `sessions` (hashed tokens and expiry), and `agreements` (owner, template ID, title, fields, timestamps). Passwords use standard-library PBKDF2-HMAC-SHA256 with 600,000 iterations and random salts. Session cookies are HttpOnly, SameSite=Lax, Secure for TLS requests, and expire after seven days. Sign-out revokes the current session. Go cross-origin protection covers state-changing routes. SQLite access is serialized through one connection.
 
-`POST /api/chat` sends the conversation, active document ID, and separate session drafts to OpenRouter/NVIDIA and returns a reply, selected document ID, optional suggested alternative, and the selected document’s complete field entries. Chat and agreement state stay in React memory; Prelegal does not persist them. The API key stays on the server.
+Authenticated `POST /api/chat` sends the conversation, active document ID, and separate session drafts to OpenRouter/NVIDIA and returns a reply, selected document ID, optional suggested alternative, and the selected document’s complete field entries. Chat and unsaved state stay in React memory. `POST /api/auth/signup`, `/signin`, `/signout` and `GET /api/auth/session` handle accounts and sessions. Authenticated `GET/POST /api/agreements` and `GET/PUT /api/agreements/{id}` provide owner-scoped document history and saving. Save draft persists partial fields; PDF download saves before rendering. Reopening restores saved fields with a fresh chat. The API key stays on the server.
 
 Use `make start`, `make stop`, `make logs`, and `make test`. Application available at http://localhost:8000. Optional frontend hot reload is available through the Compose `dev` profile on port 3000.
 
 ## Color Scheme
 
-Use these colors for new UI. The demo login and AI chat builder follow this palette.
+Use these colors for new UI. Account screens, the document library, and the AI chat builder follow this palette.
 
 - Accent Yellow: `#ecad0a`
 - Blue Primary: `#209dd7`
@@ -46,12 +55,12 @@ Use these colors for new UI. The demo login and AI chat builder follow this pale
 - Dark Navy: `#032147` (headings)
 - Gray Text: `#888888`
 
-## Implemented status (through KAN-9)
+## Implemented status (through KAN-10)
 
 - KAN-8 delivery: implementation and validation complete; [PR #6](https://github.com/jose-lopes/prelegal/pull/6) merged into `main`; [KAN-8](https://josemslopes.atlassian.net/browse/KAN-8) marked Done in Jira.
 - Common Paper dataset: 11 agreement types with source revisions, checksums, and license attribution.
 - Agreement builder: all 11 catalog types through picker/chat selection, separate in-memory drafts, structured field extraction/corrections, conditional required inputs, live preview, and full browser-generated PDFs with blank signatures, unchanged standard terms, and source attribution. Unsupported requests offer a supported alternative for acceptance.
-- Demo login: **Continue** opens the builder without credentials. Entry state and agreement inputs stay in React memory; reload returns to login and clears inputs.
+- KAN-10 replaces demo entry with email/password accounts and a private saved-document library. Reload restores the session and opens the library; unsaved changes and chat messages clear.
 - V1 foundation: Docker/Make workflow, temporary SQLite, graceful shutdown, and `GET /api/health` checking database availability.
 - Validation: Go race tests, frontend lint/unit/type/build checks, Chromium integration tests covering chat, login, mobile layout, API routes, PDF contents, and retry; opt-in live AI integration with synthetic data.
 

@@ -1,12 +1,13 @@
 # Prelegal frontend
 
 Next.js App Router and TypeScript frontend, statically exported for the Go runtime
-with AI drafting in [KAN-9](https://josemslopes.atlassian.net/browse/KAN-9). Select
-**Continue** on the demo login screen to enter the builder; no credentials or
-account are required. Choose any of the 11 catalog types in the picker or describe
+with accounts and private saved documents in [KAN-10](https://josemslopes.atlassian.net/browse/KAN-10).
+Register or sign in to view your document library, then select **New agreement**.
+Choose any of the 11 catalog types in the picker or describe
 what you need in chat. The assistant collects document-specific details and accepts
 corrections. Unsupported requests receive an alternative for the user to accept.
 Switching types restores that type's draft without copying terms from another.
+Save partial drafts with **Save draft**, or reopen a saved document to continue.
 Review the live preview and download a selectable-text PDF with populated cover
 page/details, blank signature/date lines, all standard terms, and attribution.
 
@@ -48,7 +49,7 @@ the application dependency and waits for its health check before browser tests.
 Chat integration tests mock the AI API to cover follow-up questions, partial drafts,
 corrections, pending requests, failures and retry without external calls.
 Downloaded PDFs are parsed to verify selectable text, completed values, standard
-terms, and attribution. Tests also cover demo entry, reload reset, mobile layout,
+terms, attribution, and the draft/legal-review disclaimer. Tests also cover registration, sign-in, session restoration, sign-out, owner isolation, save/reopen/update, failures/retry, mobile layout,
 and API/static routing. Screenshots/traces remain inside the test container; omit
 `--rm` and use `docker compose cp` to retain them for review. `make test` runs all
 frontend checks, Go race tests, and browser tests.
@@ -83,15 +84,19 @@ tests default to the running application at `http://127.0.0.1:8000`; override wi
 
 ## Data and templates
 
-Chat messages, agreement data and demo entry stay in React memory. Each message
-sends the conversation, active document ID, and separate session drafts to the Go backend, which calls
-OpenRouter with the NVIDIA Nemotron model. The API key stays on the server. The
-UI discloses AI processing before the first message. There are no accounts, saved
-drafts, cookies or analytics. Prelegal does not persist or log chat or agreement
-content. Reloading clears the session and returns to demo login. The SQLite
-users table remains unused by the UI. PDF generation runs in the browser, with a
-lazily loaded renderer and bundled Noto Sans fonts; see
-[font provenance and license](public/fonts/README.md).
+Chat messages and unsaved changes stay in React memory. Each message sends the
+conversation, active document ID, and separate session drafts to the authenticated
+Go backend, which calls OpenRouter with the NVIDIA Nemotron model. The API key
+stays on the server. The UI discloses AI processing before the first message.
+**Save draft** stores the selected document's title and fields in the user's
+private SQLite library. PDF download saves before rendering. Opening a saved
+document restores its fields with a fresh conversation. Reload restores the
+HttpOnly cookie session and opens the library. No agreement data or authentication
+tokens are written to localStorage or sessionStorage. Sign-out revokes the current
+session and clears the UI. Accounts, sessions, and saved documents reset whenever
+the server restarts; the UI explains this on registration, sign-in, and the library.
+PDF generation runs in the browser, with a lazily loaded renderer and bundled
+Noto Sans fonts; see [font provenance and license](public/fonts/README.md).
 
 The build reads all catalog entries in `../templates/catalog.json` and the shared
 field registry in `../backend/documents.json`. Build from the whole repository, as
@@ -101,7 +106,8 @@ Standard terms retain all clauses, nested lists, definitions and references.
 Source Markdown is unchanged. User input is rendered as literal text.
 
 The Common Paper templates are used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-Generated PDFs identify customized cover pages, unchanged terms, license, and
+All documents are drafts subject to legal review; the disclaimer appears throughout
+the UI and on the PDF cover page. Generated PDFs identify customized cover pages, unchanged terms, license, and
 pinned source. Versions are displayed only when identified by the source template.
 See the [dataset documentation](../templates/README.md).
 
