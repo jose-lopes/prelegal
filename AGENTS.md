@@ -7,7 +7,7 @@
 - Implemented registration/sign-in with salted PBKDF2 password hashes, expiring HttpOnly cookie sessions, sign-out/revocation, cross-origin protection, and authenticated chat. SQLite stores users, hashed sessions, and private agreement fields/titles/timestamps; every startup still starts fresh.
 - Implemented responsive account screens, private document library, partial-draft saving, reopening/updating, automatic saving before PDF downloads, and shared draft/legal-review disclaimers in the UI and PDF cover page. Chat and unsaved changes remain in browser memory.
 - Implementation and validation complete: `make test` passed with Go race tests, frontend lint/build/type checks, 59 frontend unit tests, and 27 Chromium tests. Coverage includes authentication, expiry/revocation, TLS cookies, Unicode passwords, cross-origin rejection, private document access, concurrent saves, restart reset, save/reopen/update, retries, mobile layouts, and complete PDFs with the disclaimer across all 11 types. Desktop/mobile screenshots reviewed; source templates unchanged.
-- PR submission pending on `feat/kan-10-accounts-documents`; Jira remains In Progress (Em andamento).
+- [PR #9](https://github.com/jose-lopes/prelegal/pull/9) created against `main` from `feat/kan-10-accounts-documents`, ready for review. Jira remains In Progress (Em andamento), as requested; review/merge remain pending.
 
 ## Overview
 
